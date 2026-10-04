@@ -1,0 +1,34 @@
+Sets
+    - Sets can be defined using curly braces for listing elements explicitly
+        S = { 1, 2, 3, 4 }
+    - Sets can be defined by showing they can ne constructed
+        S = { x ∈ S | .... }
+
+    - ∅ denots the empty set 
+    - S \ T denotes det difference of S and T (elements of S not in T)
+    - | S | denotes the size of S
+    - Powerset of S (the set of all subsets of S) is denoted P(S)
+
+Natural Numbers:
+    - The set { 0, 1, 2, 3, ... } of natural numbers is denoted by N
+    - A set is set to be countable if it can be brought in one-to-one correspondance with the natural numbers
+
+Relations:
+    - A n-place relation on a collection of sets S1, S2, ... Sn is a set R ⊆ S1 x S2 x .... x Sn of tuples of elements from S1 through Sn
+    We say s1 ∈ S1, s2 ∈ S2, ... sn ∈ SN are related by R if (s1, s2, ... , sn) is an element of R
+
+    - One place relation, P, on a set S is called a predicate. We say P is true of an element s ∈ S if s ∈ P. We can also denoted this P(s).
+
+    - Two place relation R on sets S, T is called a binary relation. We often write s R t of (s, t) ∈ R. 
+        - When S, T are the same set U, we say that R is a binary relation on U
+
+    - For readability, three or more place relations will use a "mixfix" concrete syntax
+        - Γ ⊢s : T to mean “the triple (Γ ,s,T) is in the typing relation
+
+    - Domain of a relation R on sets S and T, denoted dom(R) is set of elements s ∈ S such that (s, t) ∈ R for some t ∈ T.
+    - Codomain, or range of R, denoted range(R), is set of elements t ∈ T such that (s, t) ∈ R for some s ∈ S.
+
+    - Relation R, on a sets S and T is a partial function from S to T if whenever (s, t1) ∈ R and (s, t2) ∈ R, then t1 == t2. 
+    - In addition, if dom(R) = S, then R is a total function (or function) from S to T
+
+    
