@@ -1,0 +1,198 @@
+Many methods to ensure software system behaves correctly:
+    - Hoare Logic
+    - Algebraic Specification
+    - Modal Logic
+    - Denotational semantics
+
+^ These methids are cumbersome to use and sophistcated. Not pratical for SWEs
+
+Simple methods exist that can exist as automatic checkers built into compilers and similar tools, 
+so these can be used even by SWEs who are unfamiliar with underlying theory.
+
+Simple methods:
+    - Lightweight formal methods like model checkers --> search for erros in finite state systems
+    - Run-time monitoring --> collection of techniques that allow system to dynamically detect 
+                              when one of its components are not behavior according to spec
+
+    - type systems --> more popular and establed lightweight formal method is TYPE SYSTEMS 
+
+TYPE SYSTEM is an informal term used to be programming language community. 
+    - One plausible definition is:
+
+        A type system is a tractable syntactic method for proving the absence of
+        certain program behaviors by classifying phrases according to the kinds
+        of values they compute.
+
+
+^ The above definition identifies type systems as tools for understanding programs BUT
+in general, "type system" refers to a much broader field of study in logic, mathematics, and philosophy
+
+In CS, there are two major branches of study of type systems 
+    - More practical, concerning applcations to programming languages.
+    - More abstract, focusing on connections between various types of "pure typed lambda-calculi" and varieties of
+      logic via Curry-Howard correspondance
+
+
+Type systems (as defined above) concern themselves with classification of terms according to
+properties of the values they compute when executed.
+(types assigned to terms are generally calculated compositionally, type of expression depending only
+on the types of its subexpressions)
+
+Type systems are a kind of static approximation of run-time behaviors of the terms in a program.
+
+
+
+Being static, type systems are necessarily conservative: they can categorically prove the absence of some bad
+program behaviors, but cannot prove their presence. Hence some programs that behave well at run-time will
+be rejected.
+
+
+if <complex test> then 5 else <type error> 
+
+^^ This will be rejected as ill-typed even if happens that <complex test< will always evaluate to true.
+
+
+Most type sytems can only guarantee that well-typed programs are free from certain kinds of behavior.
+    - Can statically check that arguments to arithmetic expressions are numbers
+    - Receiver object in a method invocation always provides the requested method
+    
+    - CAN NOT:
+        - Check that second argument to division operations is non-zero
+        - Array accesses are always within bounds
+
+These bad behaviors that CAN be eliminated by type systems are run-time type errors (per language choice)
+Each type system comes with its own definition of behaviors it aims to prevent.
+
+Safety (or soundness) of each type system must be judged with respect to its own set of run-time errors.
+
+
+Type systems can also be used to enforce modularity properties and protect integrity of user-defined abstractions.
+    - Violations of information hiding such as directly accessing the fields of a data value whose representation is supposed to be abstract
+    can be a run-time type error
+
+
+
+Typecheckers are built automatically into compilers or linkers. They must work autoamtically with no manual intervention from the programmer.
+
+There is still plenty of room for requiring guidance from the programmer in the form of type annotations.
+    - These type annotations are kept fairly light to make programs easier to write and read.
+
+We are most interested in methods are efficient, in addition to being automatable.
+    - What counts as efficient is a matter of debate.
+
+
+
+
+Type systems are good for 
+
+    - Detecting errors:
+        - Errors detected early can be fixed immediately rather than lurking in the code to be discovered later.
+
+        - Errors can often be pinpointed more accurately during type checking than at runtime, where effects won't be visible until after
+        things begine to go wrong
+
+        - Exposes a broad range of errors. Many errors such as confusing unit in a scientific calculation, or neglecting a boundary 
+        condition in complex case analysis
+
+        - Maximizing benefit from type system requires some involvement/attention of programmer.
+
+        - Typechecker can also be an invaluable maintenance tool. If definition of complex data structure changes, they don't need to search for this by hand.
+        All sites using this data structure become type inconsistent.
+
+    
+    
+    - Abstraction:
+        - Type systems form the backbone of module languages to package and tie together components of large type systems.
+
+        - Structuring large systems in terms of modules with clear interfaces leads to more abstract style of design, where interfaces
+        are designed and discussed indepdently from their eventual implementations.
+
+    
+
+    - Documentation:
+        - Types are also useful when reading programs. Type declarations in procedure headers and module interfaces constitute a form of documentation
+        giving usefule hints about behavior.
+        
+        - Unlike comments, this form of documentation cannot become outdated, since it is checked during every run of the compiler.
+
+    
+
+    - Language Safety:
+        - "Language safety" is a contentious term, with its definition being strongly influenced by language community to which they belong.
+
+        - "Safe language" is one that protects its own abstractions. 
+            - All high-level languages provides abstractions of machine services. Saferty refers to language's ability to guarantee
+            integrity of these abstractions (and higher level abstractions introduced by the programmer)
+                
+                - For example, a language may provide arrays with access and update operations as an abstraction of the underlying memory.
+                And so a programmer using this language may expect that an array can be changed only by using the update operation on it explicitly
+                and not by writing past the end of some other data structure.
+
+                - One expects that lexically scoped variables can only be accessed from within their scope.
+
+            - In a safe language, these abstractions may be used abstractly. In an unsafe language, to understand how a program may misbehave, it is necessary 
+            to keep in mind all sorts of low-level details such as layout of data structures in memory and order in which they were allocated.
+
+            - Language safety is not the same thing a static type safety. Language safety can be achieved by static checking OR runtime checks that trap non-sensical
+            operations just at the moment when they are attempted and stop the program or raise an exception.
+
+            - Unsafe languages often provide "best effort" static type checking to help eliminate the most obvious sort of slips, but such languages are not "type-safe"
+            since they provide no guarantrees that well-typed programes are well-behaved. Type-checkers for these languages often suggest the presence of run-time type errors 
+            but not prove their absence.
+
+            - Once a langage provides safety for most operations at run-time, there is little additional cost to checking all operations.
+
+            - Language safety is seldom absolute:
+                - Safe languages often provide facilities such as foreign function calls to code written in other, possibly unsafe languages.
+                - Langauges like OCaml, Standard ML, and C# even offer an "unsafe" sublanguages.
+
+            - Cardelli distinguishes between trapped and untrapped errors
+                - Trapped errors causes computation to stop (or raise an exception that can be handeled)
+                - Untrapped errors may allow computation to continue (accessing data beyond end of an error, etc)
+
+                - Safe languages prevent untrapped errors at runtime 
+
+            - Safe Languages are defined entirely by programmer's manual.
+                - Definition of language dictates behavior of every program.
+                - Manual of language like C does not constitue definition since behavior of some programs depends on compiler
+                (compiler specific behavior like data structures are laid out in memory)
+
+    - Efficiency
+        - First type systems for languages such as Fortran were designed to improve efficiency of numerical calculations.
+            - Integer-valued and real-valued arithmetic expressions were distinguished so that compiler can use different representations
+            and generate appropriate machine instructions.
+            
+        - Many dynamic checks are eliminated with safe languages
+
+        - Many high-performance compilers rely heaily on information gathered by typechecker during optimization and code-gen.
+
+Further Applications:
+    - In automated theorem proving, type system are used to represent logical propositions and proofs
+    - Proofs assistants such as Coq, Nuprl, Lego, etc are all directly based on type theory
+
+
+Type System and Language Design:
+    - Retrofitting a language not designed with type checking can be tricky.
+        - Languages w/o type systems - even safe, dynamically checked languages - tend to offer features or encourage idioms
+        that make type checking difficult or infeasible
+
+        - In typed languages, the type system is often foundational to the design
+
+        - Concrete syntax of type d anguages tends to be more complicated than untyped languages. Hence, it is easier to do a good job of 
+        designing a clean and comprehensible syntax when all the issues can be addressed together. 
+
+        - Well-designed statically typed languages will never require hge amounts of type information to be explicitly and tediously maintainted by the programmer
+            - Writing down type annotations explcitly and where they can be inferred by the compiler IS DIFFERENT FROM whether type system is integral to language
+
+
+History:
+
+    - Type systems were first used to make simple distinctions between integer and floating point calculations
+    - This classification was extednded to structure data (arrays, etc) and higher order functions
+    - In 1970s, even richer concepts (parametric polymorphism, ADT, modules, and subtyping) were introduced
+        - By this point type systems emerged as a field in its own right
+        - Connections between CS type systems and those studied in logic began to emerge
+
+
+
+CHECK OUT RELATED READING AFTER FINISHING THIS BOOK
