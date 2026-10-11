@@ -31,4 +31,84 @@ Relations:
     - Relation R, on a sets S and T is a partial function from S to T if whenever (s, t1) ∈ R and (s, t2) ∈ R, then t1 == t2. 
     - In addition, if dom(R) = S, then R is a total function (or function) from S to T
 
+    - Let R be a binary relation on set S, P be a predicate on set S. The P is preserved by R if whenever we have (s, s') ∈ R and P(s), then P(s')
+
+
+Ordered Sets:
+    - Let R be a binary relation on a set S 
+        - R is reflexive if (s, s) ∈ R for all s ∈ S
+        - R is symmetric if (s, t) ∈ R implies (t, s) ∈ R
+        - R is transitive if (s, t) ∈ R and (t, u) ∈ R implies (s, u) ∈ R
     
+        - R is antisymmetric if (s, t) ∈ R and (t, s) ∈ R implies s = t
+    
+
+    - A pre-order on S is a reflexive and transitive relation (preorders are typically denoted ≤)
+    - A partial order on S is a pre-order that is also anti-symmetric
+    - A partial order that with the property for all s, t ∈ S implies s <= t or t <= s is a total order
+
+    - A reflexive, transitive, and symmetric relation on S is called an equivalence
+
+    
+    - Suppose ≤ is a partial order on a set S, with s,t ∈ S. An element j ∈ S is said to be a join (or least upper bound) of s and t if 
+        - s ≤ j and t ≤ j
+        - For any element k ∈ S, and s ≤ k and t ≤ k, we have j ≤ k
+    (the meet or greatest lower bound can be similarly defined)
+
+
+    - Let R be a binary relation on S. 
+        - The reflexive closure of R is the smallest reflexive relation R' that contains R.
+        - The transitive closure of R is the smallest transitive relation R' that contains R.
+        - The reflexive and transitive closure of R is the smallest reflexive and transitive relation that contains R, denoted R*.
+    
+
+    - Suppose we have a preorder ≤ on a set S.
+        - A decreasing chain ≤ is a sequence s1, s2, s3, ... of elements of S sich that s_i+1 ≤ si for every i.
+        (chains can either be finite or infinite)
+
+        - ≤ is well founded if contains no infinite decreasing chains. 
+            - The usual order on the natural numbers with 0 < 1 < 2 < 3 < ... is well founded
+            - The usual order on the integers is no well founded since  ... < -2 < -1 < 0 < 1 < 2 < 3 ... 
+
+
+Sequences: 
+    - A sequence is written y listing its elements, separate by a comma. The comma is used as both the "cons" operations for adding an element,
+    and as an "append" operation for sequences.
+        - Let a = 1, 2, 3
+              b = 5, 6
+
+        - 0, a = 0, 1, 2, 3
+        - a, b = 1, 2, 3, 4, 5, 6
+
+    - The sequence of numbers 1 to n is abbreviated 1..n
+    - |a| refers to the length of a sequence
+    - Empty sequence is denoted as •
+    - A sequence is said to be a permutation of another if it contains exactly the same elements, possible in a different order.
+
+
+Induction:
+    - Principle of ordinary induction on natural numbers:
+        - Suppose that P is a predicate on the natural numbers. Then:
+            If P(0)
+            and, for all i, P(i) implies P(i + 1)
+            then P(n) holds for all n
+    
+    - Principle of complete induction on natural numbers:
+        - Suppose that P is a predicate on the natural numbers. Then:
+            If, for each natural number n,
+            given P(i) for all i < n,
+            we can show P(n).
+            then P(n) holds for all n
+    
+    - The lexicographic order on pairs of natural numbers is defined as follows
+        (m, n) ≤ (m', n') iff either m < m' or else m = m' and n < n'.
+
+    - Principle of lexicographic induction.
+        - Suppose that P is a predicate on pairs of natural numbers.
+            If, for each pair of (m, n) of natural numbers,
+                given P(m', n') for all (m', n') < (m, n)
+                we can show P(m, n)
+            then P(m, n) holds for all m,n
+
+    Lexicographic inductions is the basis for proofs by nested induction, some cases of an inductive proof proceed "by an inner induction".
+    This can be generalized to triples, 4-tuples, 5-tuples of numbers, etc.

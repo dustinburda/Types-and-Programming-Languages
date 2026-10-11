@@ -1,0 +1,180 @@
+2.2.6) Suppose we are given a relation R on a set S. Define the relation R′ as follows:
+
+R′ = R ∪ { (s,s) | s ∈ S }.
+
+That is, R′ contains all the pairs in R plus all pairs of the form (s,s). 
+Show that R′ is the reflexive closure of R.
+
+
+Proof: 
+Since { (s,s) | s ∈ S } ⊆ R' and R ⊆ R', 
+    1.1) R' is a reflexive relation containing R.
+
+Let R'' be any reflexive relation containing R, then we have,
+
+    2.1) R ⊆ R''.
+    2.2) { (s,s) | s ∈ S } ⊆ R''. 
+
+By 2.1, 2.2, we have 
+
+    2.3) R ∪ { (s,s) | s ∈ S } ⊆ R''
+
+Hence by the definition of R'
+    
+    2.4) R' ⊆ R''
+
+Combining 2.4 and 1.1 implies R' is a reflexive relation on S containing R and a subset of any other reflexive relation R''.
+
+Thus R' is the smallest reflexive relation.
+
+
+
+========================================================================================================================================================================
+
+
+
+2.2.7) Here is a more constructive definiton of the transitive closure of a relation R.
+
+Define 
+
+R0 = R
+
+R_i+1 = R_i ∪ { (s,u) | for some t, (s,t) ∈ Ri and (t,u) ∈ Ri}
+
+That is we construct each R_i+1 by adding to Ri all the pairs that can obtained by "one step of transitivity" from pairs already in R_i.
+
+Finally, define the relation R+ as the union of all R_i.
+
+R+ = ∪ R_i
+     i
+
+Show that R+ is the transitive closure of R.
+
+
+
+Proof: 
+The proof will proceed in two steps: 
+    1) Show R+ is a transitive relation contain R. 
+    2) Show that any other transitive relation R' containing R must also contain R+.
+
+    Since R = R0 ⊆  ∪ R_i = R+, we have 
+                    i
+
+        1.1) R ⊆ R+.
+
+    Now, let (s, t) and (t, u) be arbitrary pairs in R+.
+    
+    Since the sets Ri are an increasing chain of sets, let R_j be the first set containing (s, t).
+    Let R_k be the first set containing (t, u). Let n = max(j , k). Then by the definition of R_i,
+    R_n+1 must contain (s, u).
+
+    Hence 
+    
+    R_n+1 ⊆ ∪ R_i = R+ must contain (s, u)
+            i
+
+    This shows
+
+        1.2) R+ is a transitive relation.
+    
+    By 1.1 and 1.2, we have
+
+        1.3) R+ is a transitive relation containing R.
+
+    
+    Now let R' be an arbitrary transitive relation containing R. 
+    
+    We will proceed by induction, claiming, each R_i 
+
+        Base Case:
+            By definition, R0 = R ⊆ R'
+        
+        Inductive Argument:
+            Assume that R_i ⊆ R'. Then because R' is transitive, for each pair of elements (s, t), (t, u), (s, u) must be in R'.
+            This implies R_i+1  ⊆ R'.
+
+        Hence R_i ⊆ R' for every i.
+
+        Then 
+        
+            2.1) ∪ R_i ⊆ R'
+                 i
+
+        Hence by 2.1,
+
+            R+ ⊆ R'
+
+
+
+========================================================================================================================================================================
+
+
+
+2.2.8) Suppose R is a binary relation on a set S, P is a predicate on S that is preserved by R.
+Prove that P is also preserved by R*.
+
+Proof:
+
+    Let R_t be the transitive closure of R.
+    Let R_r be the reflexive closure of R.
+
+
+    // TODO: CLEAN THIS SHIT UP R* = R_t u Id_S
+
+    We now prove R* = R_t ∪ R_r
+
+        - R_t ∪ R_r ⊆ R*
+            - Since R* is a transitive closure containing R and a reflexive closure containing R, 
+                - R_t ⊆ R*
+                - R_r ⊆ R*
+            Hence R_t ∪ R_r ⊆ R*
+        
+        - R* ⊆ R_t ∪ R_r
+            - R_t ∪ R_r = R_t ∪ R ∪ { (s,s) | s ∈ S } is a reflexive relation containing R as it contains all pairs of the form (s, s) | s ∈ S
+            - Let (s, t), (t, u) ∈ R_t ∪ R_r. 
+                - If (s, t), (t, u) ∈ R_t, then since R_t is transitive, (s, u) ∈ R_t ⊆ R_t ∪ R_r. 
+                - If (s, t), (t, u) ∈ R_r = R ∪ { (s,s) | s ∈ S }
+                    - If both (s, t), (t, u) ∈ R, then R_1 contains (s, u), and so (s, u) ∈ R_t ⊆ R_t ∪ R_r. 
+                    - If both (s, t), (t, u) ∈ { (s,s) | s ∈ S }, then s = t, t = u, and so (s, u) = (s, s) ∈ R_r ⊆ R_t ∪ R_r. 
+                    - If one is in R, and the other in { (s,s) | s ∈ S }, WLOG (s, t) ∈ R and (t, u) ∈ { (s,s) | s ∈ S }, then t = u, hence (s, u) = (s, t) ∈ R ⊆ R_r ⊆ R_t ∪ R_r
+                - If one is in R_t, and the other is in R_r, WLOG (s, t) ∈ R_t and (t, u) ∈ R_r
+                    - If (t, u) ∈ R, then (t, u) ∈ R_t, and so by transitivity of R_t, (s, u) ∈ R_t ⊆ R_t ∪ R_r. 
+                    - If (t, u) ∈ { (s,s) | s ∈ S }, then t = u, hence (s, u) = (s, t) ∈ R_t ⊆ R_t ∪ R_r.
+                In all cases, R_t ∪ R_r contains (s, u), and is thus, transitive.
+
+            Since R_t ∪ R_r is a reflexive and transitive relation containing R, and R* is the smallest such relation,
+            we have R* ⊆ R_t ∪ R_r
+
+
+    We may now proceed with the proof of the original claim.
+
+    Let (s,t) ∈ R* = R_t ∪ R_r and s ∈ P.
+        
+        - Let (s, t) ∈ R_r = R ∪ (s, t) ∈ { (s,s) | s ∈ S }.
+            - If (s, t) ∈ R, since R preserves P, we have t ∈ P.
+            - If (s, t) ∈ { (s,s) | s ∈ S }, then t = s ∈ P.
+        Hence any pair (s, t) ∈ R_r with s ∈ P implies t ∈ P. 
+        So P is preserved by R_r.
+
+
+        - Let (s, t) ∈ R_t = ∪ R_i ⊆ R'
+                             i
+            where 
+            - R0 = R
+            - R_i+1 = R_i ∪ { (s,u) | for some t, (s,t) ∈ Ri and (t,u) ∈ Ri}
+
+
+            - We will show by induction that each R_i preserves P
+
+                - Clearly R_0 = R preserves P. This proves the base case.
+
+                - Assume P is preserved by R_i. Now pick some element (s, t) ∈ R_i+1. Either,
+                    - (s, t) ∈ R_i, hence t ∈ P, since P is preserved by R_i by the inductive hypothesis.
+                    - Or (s, t) ∈  { (s,u) | for some t, (s,t) ∈ Ri and (t, u) ∈ Ri}. Then, there exists an element u ∈ S such that (s, u), (u, t) ∈ R_i. 
+                    Since P is preserved by R_i, we know that if s ∈ P, then u ∈ P. And by extension if u ∈ P, then t ∈ P.
+                Hence given an arbitrary pair (s, t) ∈ R_i+1 with s ∈ P, we have t ∈ P, so P is preserved by R_i+1.
+        
+            Since each R_i preserves P, then R_t = ∪ R_i must preserve P as well.
+                                                   i
+    
+    Since both R_t and R_r preserve P, then R* = R_t ∪ R_r preserves P as well.
