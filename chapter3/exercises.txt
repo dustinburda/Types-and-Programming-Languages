@@ -1,0 +1,31 @@
+3.2.4) How many elements does S3 have
+    Solution:
+        S0 = ∅
+        S1 = { true, false, 0}
+
+Solution:
+    Since S1 has three terms, we we have 3 succ terms, 3 pred terms, 3 iszero terms, and 27 if then else terms in S2 
+    in addition to everything in S1. This creates a total of 3 + 3 + 3 + 3 + 27 = 39 terms.
+
+    For S3, 39 succ terms, 39 pred terms, 39 is zero terms and 39^3 if then else terms, this in addition to everything in S2.
+    So we have
+    |S3| =  39 + 39 + 39 + 39 + 39^3  = 59475
+
+
+3.2.5) Show that the sets Si are cumulative - that is, for each i, we have Si ⊆ Si+1
+
+Proof: We will proceed by induction.
+
+        Base Case: S0 ⊆ S1
+        S0 = ∅ ⊆ S1 
+
+        Inductive Case: Assume that for all k < i, we have Sk ⊆ Sk+1
+        
+        Let t be a term in in Sk.
+        t is must be either
+            1) constant (true, false, null) 
+            2) of the form, succ t1, pred t1, iszero t1, if t1 then t2 else t3 
+                where t1,t2,t3 ∈ Sk-1 
+        
+        
+

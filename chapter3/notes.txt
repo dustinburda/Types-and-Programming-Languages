@@ -1,0 +1,119 @@
+- To talk rigorously about type systems, we need to define some basic aspects of programming languages
+    - Need mathematically tractable tools for expressing and reasoning about syntax and semantics
+
+- We develop tools for small language of booleans and numbers.
+    - Will help us understand abstract syntax, inductive definitions, proofs, evaluation, and modeling of runtime errors.
+
+
+- We define several syntactic forms:
+    - true
+    - false
+    - conditional expressions
+    - numeric constant 0
+    - succ , pred arithmetic operators
+    - iszero testing operation
+
+These forms can be summarized with the following grammar.
+
+    t ::=
+        true
+        false
+        it t then t else t
+        0
+        succ t
+        pred t
+        izero t
+    
+
+Conventions used in this book are close to standard BNF
+
+    t ::=    --> defines set of terms (t used to range over terms)
+
+    - each line afterwards gives one alternative syntactic form for terms
+    - at everypoint where the symbol t appears, we may substitute any term. 
+
+
+t is a metavariable --> placeholder or a paricular term and NOT a variable of the object language, but rather of the metalanguage (notation we used
+to describe the language)
+
+We use metavariables like t, and nearby letters like s, u, r and variants like t1, s' to stand for terms of object language we are discussing
+
+For now, term and expression are used interchangably. Starting in chapter 8, we will use expression for syntactic phrases, and term for phrases 
+representation comptations.
+
+
+A program in present langauge is form built from terms in grammar above.
+
+    if false then 0 else 1
+    > 1
+
+    iszero( pred (succ 0))
+    > true
+
+> is used to display results of evaluating examples
+
+compound arguments to succ, pred, iszero are enclosed in parentheses for readability.
+Parentheses are not mentioned in grammar, which defines only abstract syntax.
+
+Parentheses are typically used to resolve ambiguities in grammars. Our current language has no ambiguities (each sequence of tokens can be parsed
+as a term in at most on way). 
+(We will return to discussion of parentheses and abstract syntax in Chapter 5)
+
+
+We used standard arabic numerals for numbers, which are represented foramlly as nested application of succ to 0.
+    - succ (succ (succ 0)) is written as 3
+
+The result of evaluation of terms will always be booleans constants or numbers.
+    - Such terms are called values (will play special role in formalizatin of evaluation order of terms)
+
+Our synrax permits formation of dubious looking terms like:
+    - succ true
+    - if 0 then 0 else 0
+These are examples of nonsensical programs we will want type system to exclude.
+
+
+Many equivalent ways of defining syntax of our language:
+
+
+Inductively:
+    The set of terms is the SMALLEST T such that:
+        1. {true, false.. 0 } ⊆ T 
+        2. if t1 ∈ T, then { succ t1, pred t1, izszero t1 } ⊆ T
+        3. if t1 ∈ T, t2 ∈ T, t3 ∈ T, then if t1 then t2 else t3 ∈ T
+
+First rule gives which simple expressions are in T
+Second and third rules give us rules by which we can judge that certain compound expressions are in T
+
+T is a set of trees. 
+
+
+
+Inference Rules:
+    1. true ∈ T
+    2. false ∈ T
+    3. 0 ∈ T
+    4. t1 ∈ T  | succ t1 ∈ T
+    5. t1 ∈ T | pred t1 ∈ T
+    6. t1 ∈ T | iszero t1 ∈ T
+    7. t1 ∈ T, t2 ∈ T, t3 ∈ T | if t1 then t2 else t3 ∈ T
+
+Rules with no premises are called axioms
+Inference rules are both axioms and "proper rules" (with the bars)
+
+Terms, Concretely: 
+    S0 = ∅
+    Si+1 = {true,false,0}
+            ∪ {succ t1,pred t1,iszero t1 |t1 ∈Si}
+            ∪ {if t1 then t2 else t3 | t1,t2,t3 ∈Si}.
+    
+    Finally, let
+    
+    S = ∪ Si
+        i
+
+
+S0 is empty
+S1 is just the constants
+S2 is the constants and just one of succ, pred, iszero, if
+
+S collects all these phrases (all phrases built with some finite number of arithmetic, conditional operators, beginning with just constants)
