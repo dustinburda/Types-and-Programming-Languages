@@ -117,3 +117,138 @@ S1 is just the constants
 S2 is the constants and just one of succ, pred, iszero, if
 
 S collects all these phrases (all phrases built with some finite number of arithmetic, conditional operators, beginning with just constants)
+
+
+
+
+The grammar and inductive formulations characterize this set.
+The inference rules state how to construct this set.
+
+
+Proposition: T = S
+Proof:
+    Since T is the smallest set described by its conditions, it suffices to prove that S satisfies the same conditions and is a subset of T.
+
+
+
+
+
+Induction on Terms
+
+The above proposition tells use that t ∈ T can only take one of three forms:
+    1) t is a constant
+    2) t has the form succ t1, pred t1, iszero t1 for some smaller term t1
+    3) t has the form if t1 then t2 else t3 for some smaller terms t1, t2, t3
+
+We can give inductive definitions of functions over the set of terms.
+We can give inductive proofs of properties of terms.
+
+
+
+The set of constants apppearing in a terms t, denoted Consts(t) is define as
+
+    Consts(true) = { true }
+    Consts(false) = { false }
+    Consts(0) = { 0 }
+    Consts(succ t1) = Consts(t1)
+    Consts(pred t1) = Consts(t1)
+    Consts(iszero t1) = Consts(t1)
+    Consts(if t1 then t2 else t3) = Consts(t1) ∪ Consts(t2) ∪ Consts(t3)
+
+We can similarly define size(t)
+
+    size(true) = 1
+    size(false) = 1
+    size(0) = 1
+    size(succ t1) = 1 + size(t1)
+    size(pred t1) = 1 + size(t1)
+    size(iszero t1) = 1 + size(t1)
+    size(if t1 then t2 else t3) = size(t1) + size(t2) + size(t3) + 1
+
+
+And depth(t)
+
+    depth(true) = 1
+    depth(false) = 1
+    depth(0) = 1
+    depth(succ t1) = 1 + depth(t1)
+    depth(pred t1) = 1 + depth(t1)
+    depth(iszero t1) = 1 + depth(t1)
+    depth(if t1 then t2 else t3) = 1 + max(depth(t1), depth(t2), depth(t3))
+
+depth(t) is the smallest i such that t ∈ Si
+
+
+
+Lemma: The number of distinct constants in a term t is no greater than the size of t (ie | Const(t) | <= size(t) )
+
+Proof: By induction on the depth of t. 
+Assuming the desired property for all terms smaller than t, we must prove it for t itself.
+
+There are three cases to consider:
+
+    Case: t is a constant
+    | Const(t) | = | {t } |  = 1 = size(t)
+
+    Case t = succ t1, t = pred t1, t = iszero t1
+    | Const(t) | = | Const(t1) | <= size(t1) < 1 + size(t1) = size(t)
+
+    Case t = if t1 then t2 else t3
+    | Const(t) | = | Consts(t1) ∪ Consts(t2) ∪ Consts(t3) | <= | Consts(t1) | + | Consts(t2) | + | Consts(t3) |
+    <= size(t1) + size(t2) + size(t3) < size(t)
+
+
+
+This proof took a particular form of proof, principle of induction on terms
+
+Principle of Induction on Terms:
+Suppose P is a predicate on terms.
+
+    1) Induction on depth:
+        If for each term s,
+            given P(r) for all r such that depth(r) < depth(s)
+            we can show P(s)
+        then P(s) holds for all s
+
+    2) Induction on size;
+        If for each term s,
+            given P(r) for all r such that size(r) < size(s)
+            we can show P(s)
+        then P(s) holds for all s
+    
+    3) Structural Induction:
+        If for each term s,
+            given P(r) for all immediate subterms r of s
+            we can show P(s)
+        then P(s) holds for all s
+
+Induction on depth and size is analogous to complete induction on natural numbers.
+Structural induction is analagous to ordinary natural number induction.
+
+The choice of which induction principle to use is determined by which one leads to a simpler structure for the proof at hand.
+(Formally they are inter-derivable)
+
+It is common practice to use structural induction wherever possible since it works directly on terms. avoiding a detour via numbers.
+
+
+Most proofs by induction on terms have a similar structure. 
+At each step of induction, we are given a term t for which we must show some property P, assuming P holds for all subterms. 
+We do this by separately considering each of the pisslbe forms that t could have, arguing P must hold for any t of this form.
+
+Since the only parts of this structure that vary from one inductive proof to another are the details of the arguments for the individual cases,
+it's common practice to elide the unvarying parts and write the proof as follows:
+
+    Proof: By induction on t.
+        Case: t=true
+        ...show P(true)...
+
+        Case: t=false
+        ...show P(false)...
+
+        Case: t=if t1 then t2 else t3
+        ...show P(if t1 then t2 else t3), using P(t1), P(t2), and P(t3)...
+
+        (And similarly for the other syntactic forms.)
+
+
+        
